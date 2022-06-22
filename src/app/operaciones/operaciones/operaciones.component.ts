@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Operacion } from '../models/operacion';
 import { faMagnifyingGlass, faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { OperacionService } from '../service/operacion.service';
 import { OperacionImpl } from '../models/operacion-impl';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-operaciones',
@@ -11,17 +11,20 @@ import { OperacionImpl } from '../models/operacion-impl';
 })
 export class OperacionesComponent implements OnInit {
 
-  faMagnifyingGlass = faMagnifyingGlass;
-  faPencil = faPencil;
-  faTrashCan = faTrashCan;
-
   operacion: Operacion = new OperacionImpl;
+  private urlEndPoint: string = "https://cibops.herokuapp.com/api/actividadesoperativas/21/operacion"
 
-  constructor(private operacionService: OperacionService) { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-      this.operacionService.getOperacion().subscribe((response) => this.operacion =
-      this.operacionService.mapearOperacion(response));
+    this.http.get<any>(this.urlEndPoint).subscribe(res =>
+      this.operacion = this.mapearOperacion(res));
+  }
+
+  mapearOperacion(operacionApi: any): OperacionImpl {
+    let operacion: Operacion = new OperacionImpl();
+    operacion.urlOperacion = operacionApi._links.self.href;
+    return operacion;
   }
 
 }

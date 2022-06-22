@@ -11,10 +11,6 @@ import { faMagnifyingGlass, faPencil, faTrashCan } from '@fortawesome/free-solid
 })
 export class OperacionItemComponent implements OnInit {
 
-  faMagnifyingGlass = faMagnifyingGlass;
-  faPencil = faPencil;
-  faTrashCan = faTrashCan;
-
   @Input() operacion: Operacion = new OperacionImpl();
 
   constructor() { }
